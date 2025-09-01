@@ -6,40 +6,44 @@ functions = {
     '+': op.add,
     '-': op.subtract,
     '*': op.multiply,
-    '/': op.divide
+    '/': op.divide,
+    'x': op.multiply
     }
 
-#define the values of the expression
-numbers = []
-
-def evalOperation(numbers, oper):
+def evalOperation(mainNums, oper):
     fn = functions[oper]
-    if len(numbers) % 2 == 0:
-        a = numbers[0]
-        b = numbers[1]
+    if len(mainNums) % 2 == 0:
+        a = mainNums[0]
+        b = mainNums[1]
         solution = fn(a,b)
     return solution
 
 
+mainNums = []
 
 def main():
     response = input("Would you like to calculate? (Y/N): ").strip().lower()
     if response == 'n':
         print("Okay, Goodbye!")
     elif response == 'y':
-        expression = input("Please enter your expression (example:\"2 + 5\" ): ")
-        #parse string and find characters +, /, x, -
-        for letter in expression:
-            #instanstiate the first number of the expression 
-            if op.is_number(letter):
-                numbers.append(float(letter))
-            #map given string operator to correct operation
-            elif letter in ('+', '-', 'x', '/','*'):
-                oper = letter
-        
-        print(evalOperation(numbers, oper))             
+        expression = input("Please enter your expression (example: \" 2 + 5 \" ): ").replace(' ','')
+        exp = [letter for letter in expression]
+        #loop to separate values in expression without operator
+        for ele in range(len(exp)):
+            if exp[ele] in ('+', '-', 'x', '/','*'):
+                oper = exp[ele]
+                mainNums.append(exp[:ele])
+                mainNums.append(exp[ele+1:])
+            
+        #join strings together 
+        for ele in range(len(mainNums)):
+            mainNums[ele] = ''.join(mainNums[ele])
+            mainNums[ele] = int(mainNums[ele])
+
+        print(evalOperation(mainNums, oper))             
+
     else:
-        expression = input("Please enter your expression (example:\"2 + 5\" ): ")
+        expression = input("Please enter your expression (example:\" 2 + 5 \" ): ")
 
 
 if __name__ == "__main__":
