@@ -15,9 +15,9 @@ def divide(a,b):
     return a / b
 
 #function to check if a string is a number
-def is_number(string):
+def is_Number(string):
     try:
-        x = float(string)
-        return True
+        float(string)
+        is_Number = True
     except:
-        pass
+        is_Number = False
