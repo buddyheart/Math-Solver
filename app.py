@@ -28,7 +28,6 @@ def is_Number(string):
 
 
 mainNums = []
-placeHolder = [[],[]]
 
 def main():
     response = input("Would you like to calculate? (Y/N): ").strip().lower()
@@ -38,10 +37,8 @@ def main():
         expression = input("Please enter your expression (example: \" 2 + 5 \" ): ").replace(' ','')
         exp = [letter for letter in expression]
         exp_sort = list()
-
-        n = 2
         key = 0
-        #L[1:3] = [''.join(L[1:3])]
+
         for ele in range(len(exp)):
             if exp[ele] in ('x', '/', '*', '+', '-') and not key:
                 exp_sort.extend([''.join(exp[:ele]),exp[ele]])
@@ -52,28 +49,31 @@ def main():
             elif ele == len(exp)-1:
                 exp_sort.append(''.join(exp[key+1:ele+1])) 
 
+        i = 0
+        while i <len(exp_sort):
+            if exp_sort[i] in ('x', '/', '*'):
+                oper = exp_sort[i]
+                mainNums.extend([float(exp_sort[i-1]), float(exp_sort[i+1])])
+                exp_sort[i-1:i+2] = [evalOperation(mainNums,oper)]
+                i = 0
+                mainNums.clear()
+            else:
+                i += 1
 
+        i = 0
+        while i <len(exp_sort):
+            if exp_sort[i] in ('+','-'):
+                oper = exp_sort[i]
+                mainNums.extend([float(exp_sort[i-1]), float(exp_sort[i+1])])
+                exp_sort[i-1:i+2] = [evalOperation(mainNums,oper)]
+                i = 0
+                mainNums.clear()
+            else:
+                i += 1
 
-        print(exp_sort)            
+        
+        print(exp_sort)
 
-        #loop to separate values in expression without operator
-        '''
-        for ele in range(len(exp)):
-            if exp[ele] in ('+', '-', 'x', '/','*'):
-                oper = exp[ele]
-                mainNums.append(exp[:ele])
-                mainNums.append(exp[ele+1:])
-                print(mainNums)
-        #join strings together 
-        for ele in range(len(mainNums)):
-            mainNums[ele] = ''.join(mainNums[ele])
-            mainNums[ele] = int(mainNums[ele])
-
-        print(evalOperation(mainNums, oper))             
-
-    else:
-        expression = input("Please enter your expression (example:\" 2 + 5 \" ): ")
-    '''
 
 if __name__ == "__main__":
     main()
